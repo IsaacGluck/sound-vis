@@ -126,38 +126,39 @@ var out = true;
 
 // animation loop
 function update() {
-  if (dataArrayAlt != null) {
-    analyser.getByteFrequencyData(dataArrayAlt);
-    // console.log(getRGB(dataArrayAlt));
-    particleSystem.materials[0].color = new THREE.Color(getRGB(dataArrayAlt));
-
-    let volumeRatio = getVolumeRatio(dataArrayAlt);
-    target_radius = MIN_RADIUS + volumeRatio * (MAX_RADIUS - MIN_RADIUS);
-    // console.log(dataArrayAlt);
-  }
-
-  // add some rotation to the system
-  particleSystem.rotation.z += 0.005;
-
-  var pCount = particleCount;
-  while(pCount--) {
-    // get the particle
-    var particle = particles.vertices[pCount];
-
+  if (view === 0) {
     if (dataArrayAlt != null) {
-      let newCoordinates = getNewParticleCoordinates(particle.position.x, particle.position.y, particle.startingRadius);
-      particle.position.x = newCoordinates.x;
-      particle.position.y = newCoordinates.y;
+      analyser.getByteFrequencyData(dataArrayAlt);
+      // console.log(getRGB(dataArrayAlt));
+      particleSystem.materials[0].color = new THREE.Color(getRGB(dataArrayAlt));
+
+      let volumeRatio = getVolumeRatio(dataArrayAlt);
+      target_radius = MIN_RADIUS + volumeRatio * (MAX_RADIUS - MIN_RADIUS);
+      // console.log(dataArrayAlt);
     }
+
+    // add some rotation to the system
+    particleSystem.rotation.z += 0.005;
+
+    var pCount = particleCount;
+    while(pCount--) {
+      // get the particle
+      var particle = particles.vertices[pCount];
+
+      if (dataArrayAlt != null) {
+        let newCoordinates = getNewParticleCoordinates(particle.position.x, particle.position.y, particle.startingRadius);
+        particle.position.x = newCoordinates.x;
+        particle.position.y = newCoordinates.y;
+      }
+    }
+
+    // flag to the particle system that we've
+    // changed its vertices. This is the
+    // dirty little secret.
+    particleSystem.geometry.__dirtyVertices = true;
+
+    renderer.render(scene, camera);
   }
-
-  // flag to the particle system that we've
-  // changed its vertices. This is the
-  // dirty little secret.
-  particleSystem.geometry.__dirtyVertices = true;
-
-  renderer.render(scene, camera);
-
   // set up the next call
   requestAnimFrame(update);
 }

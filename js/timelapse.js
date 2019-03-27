@@ -14,7 +14,7 @@ setInterval(function(){
     let color = getRGB(dataArrayAlt);
 
     timeLapse.push({height: height, color: color});
-    console.log(timeLapse.length, particleSystems.length)
+    // console.log(timeLapse.length, particleSystems.length)
   }
 }, 100);
 
@@ -42,11 +42,15 @@ function getMaxFrequency(array, max) {
   return new_max;
 }
 
-function initParticleSystems() {
+function clearParicleSystems() {
   particleSystems = [];
   timeLapse = [];
+}
+
+function initParticleSystems() {
+  clearParicleSystems();
   timelapseScene = new THREE.Scene();
-  for (let systemNum = 0; systemNum < 100; systemNum++) {
+  for (let systemNum = 0; systemNum < 1800; systemNum++) {
     let systemParticles = new THREE.Geometry();
     for (let i = 0; i < 800; i++) {
       let particle = new THREE.Vertex( new THREE.Vector3(0, 0, 0) );
