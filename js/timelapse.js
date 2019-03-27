@@ -4,6 +4,20 @@ if (navigator.mediaDevices === undefined) {
   navigator.mediaDevices = {};
 }
 
+// gather data every .1 seconds for the time lapse view
+setInterval(function(){
+  if (dataArrayAlt != null) {
+    analyser.getByteFrequencyData(dataArrayAlt);
+
+    let volumeRatio = getVolumeRatio(dataArrayAlt);
+    let height = MIN_RADIUS + volumeRatio * (MAX_RADIUS - MIN_RADIUS);
+    let color = getRGB(dataArrayAlt);
+
+    timeLapse.push({height: height, color: color});
+  }
+}, 100);
+
+
 var BIN_FREQ_SIZE = 44100.0 / 256;
 
 var particleSystems = [];

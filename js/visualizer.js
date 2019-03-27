@@ -3,10 +3,6 @@ var MAX_RADIUS = 500;
 var target_radius = 50;
 var PARTICLE_SPEED = 3;
 
-setTimeout(function() {
-  audioCtx.resume();
-}, 2000);
-
 // Utility Functions
 function rgbToHex(r, g, b) {
   return "0x" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -143,8 +139,6 @@ function update() {
   // add some rotation to the system
   particleSystem.rotation.z += 0.005;
 
-  var asdjklsdjkl = 1;
-
   var pCount = particleCount;
   while(pCount--) {
     // get the particle
@@ -169,16 +163,3 @@ function update() {
 }
 
 requestAnimFrame(update);
-
-// gather data every .1 seconds for the time lapse view
-setInterval(function(){
-  if (dataArrayAlt != null) {
-    analyser.getByteFrequencyData(dataArrayAlt);
-
-    let volumeRatio = getVolumeRatio(dataArrayAlt);
-    let height = MIN_RADIUS + volumeRatio * (MAX_RADIUS - MIN_RADIUS);
-    let color = getRGB(dataArrayAlt);
-
-    timeLapse.push({height: height, color: color});
-  }
-}, 100);
